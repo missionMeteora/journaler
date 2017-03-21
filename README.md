@@ -14,7 +14,7 @@ func main() {
         jj := journaler.New("Main service", "Sub service")
         jj.Success("Database entry posted")
         jj.Notification("CPU temperatures are at 40*C")
-        jj.Warn("Update to remote server has failed")
+        jj.Warning("Update to remote server has failed")
         jj.Error("Danger, Will Robinson!")
 }
 ```
