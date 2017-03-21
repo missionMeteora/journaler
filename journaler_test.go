@@ -6,21 +6,21 @@ import (
 )
 
 func TestJournaler(t *testing.T) {
-	j := New("Main service", "Sub service")
-	j.Success("Database entry posted")
-	j.Notification("CPU temperatures are at 40*C")
-	j.Warn("Update to remote server has failed")
-	j.Error(errors.New("Danger, Will Robinson!"))
-	j.Debug("debug test")
-
+	jj := New("Main service", "Sub service")
+	jj.Success("Database entry posted")
+	jj.Notification("CPU temperatures are at 40*C")
+	jj.Warn("Update to remote server has failed")
+	jj.Error(errors.New("Danger, Will Robinson!"))
+	jj.Debug(map[string]string{"foo": "bar"})
+	j.Debug("Parent debug test")
 	// Testing custom labels
 	SetLabel("error", "uh oh.")
-	j.Error(errors.New("Danger, Will Robinson!"))
+	jj.Error(errors.New("Danger, Will Robinson!"))
 
 	// Testing custom output
-	j.Output("Compliment", "green", "You smell nice.")
-	j.Output("System", "default", "Server will be rebooting for maintenance in 45 minutes")
-	j.Output("System", "yellow", "Server will be rebooting for maintenance in 5 minutes")
-	j.Output("System", "red", "Server will be rebooting for maintenance in 5 seconds")
+	jj.Output("Compliment", "green", "You smell nice.")
+	jj.Output("System", "default", "Server will be rebooting for maintenance in 45 minutes")
+	jj.Output("System", "yellow", "Server will be rebooting for maintenance in 5 minutes")
+	jj.Output("System", "red", "Server will be rebooting for maintenance in 5 seconds")
 
 }
