@@ -3,20 +3,15 @@ package journaler
 import "testing"
 
 func TestJournaler(t *testing.T) {
-	jj := New("Main service", "Sub service")
-	jj.Success("Database entry posted")
-	jj.Notification("CPU temperatures are at 40*C")
-	jj.Warning("Update to remote server has failed")
-	jj.Error("Danger, Will Robinson!")
-	jj.Debug(map[string]string{"foo": "bar"})
+	test(t, New("Main service"))
+}
+
+func TestDeepJournaler(t *testing.T) {
+	test(t, New("Main service", "Sub service", "Child process"))
 }
 
 func TestJournal(t *testing.T) {
-	j.Success("Database entry posted")
-	j.Notification("CPU temperatures are at 40*C")
-	j.Warning("Update to remote server has failed")
-	j.Error("Danger, Will Robinson!")
-	j.Debug(map[string]string{"foo": "bar"})
+	test(t, j)
 }
 
 func TestRoot(t *testing.T) {
@@ -27,16 +22,29 @@ func TestRoot(t *testing.T) {
 	Debug(map[string]string{"foo": "bar"})
 }
 
-func TestOutput(t *testing.T) {
-	jj := New("Main service", "Sub service")
-	jj.Output("Compliment", "green", "You smell nice.")
-	jj.Output("System", "default", "Server will be rebooting for maintenance in 45 minutes")
-	jj.Output("System", "yellow", "Server will be rebooting for maintenance in 5 minutes")
-	jj.Output("System", "red", "Server will be rebooting for maintenance in 5 seconds")
-}
-
 func TestCustomLabel(t *testing.T) {
 	jj := New("Main service", "Sub service")
 	SetLabel("error", "uh oh.")
 	jj.Error("Danger, Will Robinson!")
+}
+
+type Tester interface {
+	Success(val interface{})
+	Notification(val interface{})
+	Warning(val interface{})
+	Error(val interface{})
+	Debug(val interface{})
+	Output(label, color string, val interface{})
+}
+
+func test(t *testing.T, ti Tester) {
+	ti.Success("Database entry posted")
+	ti.Notification("CPU temperatures are at 40*C")
+	ti.Warning("Update to remote server has failed")
+	ti.Error("Danger, Will Robinson!")
+	ti.Debug(map[string]string{"foo": "bar"})
+	ti.Output("Compliment", "green", "You smell nice.")
+	ti.Output("System", "default", "Server will be rebooting for maintenance in 45 minutes")
+	ti.Output("System", "yellow", "Server will be rebooting for maintenance in 5 minutes")
+	ti.Output("System", "red", "Server will be rebooting for maintenance in 5 seconds")
 }
