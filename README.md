@@ -2,7 +2,7 @@
 
 journaler is an output library which prepends messages with a colored label and a prefix
 
-![Example screenshot](//raw.githubusercontent.com/missionMeteora/journaler/master/screenshot.png "Example screenshot")
+![Example screenshot](https://raw.githubusercontent.com/missionMeteora/journaler/master/screenshot.png "Example screenshot")
 
 ## Usage
 ``` go
