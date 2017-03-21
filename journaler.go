@@ -179,8 +179,8 @@ func (j *Journaler) Warn(val interface{}) {
 }
 
 // Error is for error messages
-func (j *Journaler) Error(err error) {
-	j.j.Error(j.prefix + err.Error())
+func (j *Journaler) Error(val interface{}) {
+	j.j.Error(getPrefixedValue(j.prefix, val))
 }
 
 // Output is for custom messages
