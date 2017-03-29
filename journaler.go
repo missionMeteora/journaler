@@ -1,11 +1,9 @@
 package journaler
 
 import (
-	"fmt"
-	"github.com/fatih/color"
 	"os"
-	"runtime"
-	"strings"
+
+	"github.com/fatih/color"
 )
 
 const (
@@ -53,60 +51,31 @@ type Journaler struct {
 }
 
 // Success is for success messages
-func (j *Journaler) Success(val interface{}) {
-	j.j.Success(getPrefixedValue(j.prefix, val))
+func (j *Journaler) Success(fmt string, vals ...interface{}) {
+	j.j.Success(j.prefix+fmt, vals...)
 }
 
 // Notification is for notification messages
-func (j *Journaler) Notification(val interface{}) {
-	j.j.Notification(getPrefixedValue(j.prefix, val))
+func (j *Journaler) Notification(fmt string, vals ...interface{}) {
+	j.j.Notification(j.prefix+fmt, vals...)
 }
 
 // Warning is for warning messages
-func (j *Journaler) Warning(val interface{}) {
-	j.j.Warning(getPrefixedValue(j.prefix, val))
+func (j *Journaler) Warning(fmt string, vals ...interface{}) {
+	j.j.Warning(j.prefix+fmt, vals...)
 }
 
 // Error is for error messages
-func (j *Journaler) Error(val interface{}) {
-	j.j.Error(getPrefixedValue(j.prefix, val))
+func (j *Journaler) Error(fmt string, vals ...interface{}) {
+	j.j.Error(j.prefix+fmt, vals...)
 }
 
 // Output is for custom messages
-func (j *Journaler) Output(label, color string, val interface{}) {
-	j.j.Output(label, color, getPrefixedValue(j.prefix, val))
+func (j *Journaler) Output(label, color string, fmt string, vals ...interface{}) {
+	j.j.Output(label, color, j.prefix+fmt, vals...)
 }
 
 // Debug is for debug messages
-func (j *Journaler) Debug(val interface{}) {
-	j.j.debug(getPrefixedValue(j.prefix, val))
-}
-
-func getPrefixedValue(prefix string, val interface{}) string {
-	return fmt.Sprintf("%s%v", prefix, val)
-}
-
-func getShort(file string) string {
-	spl := strings.Split(file, "/")
-	ns := make([]string, 0, len(spl))
-
-	for i, part := range spl {
-		if part == "" {
-			continue
-		}
-
-		if i+1 < len(spl) {
-			ns = append(ns, string(part[0]))
-		} else {
-			ns = append(ns, part)
-		}
-	}
-
-	return "/" + strings.Join(ns, "/")
-}
-
-func getDebugVals() (filename string, lineNumber int) {
-	_, filename, lineNumber, _ = runtime.Caller(3)
-	filename = getShort(filename)
-	return
+func (j *Journaler) Debug(fmt string, vals ...interface{}) {
+	j.j.debug(j.prefix+fmt, vals...)
 }

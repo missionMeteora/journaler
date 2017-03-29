@@ -1,7 +1,6 @@
 package journaler
 
 import (
-	"fmt"
 	"io"
 	"strings"
 	"sync"
@@ -58,36 +57,36 @@ func (j *Journal) SetLabel(key, value string) (ok bool) {
 	return
 }
 
-// Success is for success messages
-func (j *Journal) Success(val interface{}) {
+// Success is for success messages, accepts a body format and values
+func (j *Journal) Success(fmt string, vals ...interface{}) {
 	j.mux.Lock()
-	fmt.Fprintf(j.w, msgFmt, j.successStr, val)
+	writeMsg(j.w, msgFmt, j.successStr, getMsg(fmt, vals))
 	j.mux.Unlock()
 }
 
-// Notification is for notification messages
-func (j *Journal) Notification(val interface{}) {
+// Notification is for notification messages, accepts a body format and values
+func (j *Journal) Notification(fmt string, vals ...interface{}) {
 	j.mux.Lock()
-	fmt.Fprintf(j.w, msgFmt, j.notificationStr, val)
+	writeMsg(j.w, msgFmt, j.notificationStr, getMsg(fmt, vals))
 	j.mux.Unlock()
 }
 
-// Warning is for warning messages
-func (j *Journal) Warning(val interface{}) {
+// Warning is for warning messages, accepts a body format and values
+func (j *Journal) Warning(fmt string, vals ...interface{}) {
 	j.mux.Lock()
-	fmt.Fprintf(j.w, msgFmt, j.warningStr, val)
+	writeMsg(j.w, msgFmt, j.warningStr, getMsg(fmt, vals))
 	j.mux.Unlock()
 }
 
-// Error is for error messages
-func (j *Journal) Error(val interface{}) {
+// Error is for error messages, accepts a body format and values
+func (j *Journal) Error(fmt string, vals ...interface{}) {
 	j.mux.Lock()
-	fmt.Fprintf(j.w, msgFmt, j.errorStr, val)
+	writeMsg(j.w, msgFmt, j.errorStr, getMsg(fmt, vals))
 	j.mux.Unlock()
 }
 
 // Output is for custom messages
-func (j *Journal) Output(label, color string, val interface{}) {
+func (j *Journal) Output(label, color string, fmt string, vals ...interface{}) {
 	j.mux.Lock()
 
 	switch color {
@@ -102,21 +101,21 @@ func (j *Journal) Output(label, color string, val interface{}) {
 		label = defaultColor.Sprintf(labelFmt, label)
 	}
 
-	fmt.Fprintf(j.w, msgFmt, label, val)
+	writeMsg(j.w, msgFmt, label, getMsg(fmt, vals))
 	j.mux.Unlock()
 }
 
 // Debug is for debug messages
-func (j *Journal) Debug(val interface{}) {
+func (j *Journal) Debug(fmt string, vals ...interface{}) {
 	// We call the unexported debug func so we have the same number of frames to skip when calling runtime.Caller
-	j.debug(val)
+	j.debug(fmt, vals)
 }
 
 // debug is for debug messages
-func (j *Journal) debug(val interface{}) {
+func (j *Journal) debug(fmt string, vals ...interface{}) {
 	fn, ln := getDebugVals()
 	j.mux.Lock()
-	fmt.Fprintf(j.w, debugFmt, j.debugStr, fn, ln, val)
+	writeDebug(j.w, j.debugStr, fn, ln, getMsg(fmt, vals))
 	j.mux.Unlock()
 }
 
