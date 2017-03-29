@@ -52,30 +52,30 @@ type Journaler struct {
 
 // Success is for success messages
 func (j *Journaler) Success(fmt string, vals ...interface{}) {
-	j.j.Success(j.prefix+fmt, vals...)
+	j.j.Success(getPrefixed(j.prefix, fmt), vals...)
 }
 
 // Notification is for notification messages
 func (j *Journaler) Notification(fmt string, vals ...interface{}) {
-	j.j.Notification(j.prefix+fmt, vals...)
+	j.j.Notification(getPrefixed(j.prefix, fmt), vals...)
 }
 
 // Warning is for warning messages
 func (j *Journaler) Warning(fmt string, vals ...interface{}) {
-	j.j.Warning(j.prefix+fmt, vals...)
+	j.j.Warning(getPrefixed(j.prefix, fmt), vals...)
 }
 
 // Error is for error messages
 func (j *Journaler) Error(fmt string, vals ...interface{}) {
-	j.j.Error(j.prefix+fmt, vals...)
+	j.j.Error(getPrefixed(j.prefix, fmt), vals...)
 }
 
 // Output is for custom messages
 func (j *Journaler) Output(label, color string, fmt string, vals ...interface{}) {
-	j.j.Output(label, color, j.prefix+fmt, vals...)
+	j.j.Output(label, color, getPrefixed(j.prefix, fmt), vals...)
 }
 
 // Debug is for debug messages
 func (j *Journaler) Debug(fmt string, vals ...interface{}) {
-	j.j.debug(j.prefix+fmt, vals...)
+	j.j.debug(getPrefixed(j.prefix, fmt), vals...)
 }

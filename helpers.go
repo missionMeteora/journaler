@@ -56,3 +56,11 @@ func getMsg(mfmt string, vals []interface{}) string {
 		return fmt.Sprintf(mfmt, vals...)
 	}
 }
+
+func getPrefixed(pfmt, fmt string) string {
+	if len(fmt) == 0 {
+		fmt = "%v"
+	}
+
+	return pfmt + fmt
+}
