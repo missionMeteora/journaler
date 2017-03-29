@@ -50,7 +50,7 @@ func getMsg(mfmt string, vals []interface{}) string {
 		return mfmt
 
 	case 1:
-		return fmt.Sprintf("%v", vals[0])
+		return fmt.Sprintf(mfmt, vals[0])
 
 	default:
 		return fmt.Sprintf(mfmt, vals...)
