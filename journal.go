@@ -115,7 +115,7 @@ func (j *Journal) Debug(fmt string, vals ...interface{}) {
 func (j *Journal) debug(fmt string, vals ...interface{}) {
 	fn, ln := getDebugVals()
 	j.mux.Lock()
-	writeDebug(j.w, j.debugStr, fn, ln, getMsg(fmt, vals))
+	writeMsg(j.w, debugFmt, j.debugStr, getMsg(fmt, vals), fn, ln)
 	j.mux.Unlock()
 }
 

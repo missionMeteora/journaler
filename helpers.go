@@ -7,12 +7,12 @@ import (
 	"strings"
 )
 
-func writeMsg(w io.Writer, msgFmt, status, msg string) {
-	fmt.Fprintf(j.w, msgFmt, status, msg)
-}
-
-func writeDebug(w io.Writer, status, fn string, ln int, msg string) {
-	fmt.Fprintf(j.w, debugFmt, status, fn, ln, msg)
+func writeMsg(w io.Writer, msgFmt, status, msg string, args ...interface{}) {
+	vs := make([]interface{}, 0, len(args)+2)
+	vs = append(vs, status)
+	vs = append(vs, args...)
+	vs = append(vs, msg)
+	fmt.Fprintf(j.w, msgFmt, vs...)
 }
 
 func getShort(file string) string {
