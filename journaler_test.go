@@ -19,7 +19,7 @@ func TestRoot(t *testing.T) {
 	Notification("CPU temperatures are at 40*C")
 	Warning("Update to remote server has failed")
 	Error("Danger, Will Robinson!")
-	Debug(map[string]string{"foo": "bar"})
+	Debug("", map[string]string{"foo": "bar"})
 }
 
 func TestCustomLabel(t *testing.T) {
@@ -29,12 +29,12 @@ func TestCustomLabel(t *testing.T) {
 }
 
 type Tester interface {
-	Success(val interface{})
-	Notification(val interface{})
-	Warning(val interface{})
-	Error(val interface{})
-	Debug(val interface{})
-	Output(label, color string, val interface{})
+	Success(fmt string, vals ...interface{})
+	Notification(fmt string, vals ...interface{})
+	Warning(fmt string, vals ...interface{})
+	Error(fmt string, vals ...interface{})
+	Debug(fmt string, vals ...interface{})
+	Output(label, color string, fmt string, vals ...interface{})
 }
 
 func test(t *testing.T, ti Tester) {
@@ -42,7 +42,7 @@ func test(t *testing.T, ti Tester) {
 	ti.Notification("CPU temperatures are at 40*C")
 	ti.Warning("Update to remote server has failed")
 	ti.Error("Danger, Will Robinson!")
-	ti.Debug(map[string]string{"foo": "bar"})
+	ti.Debug("", map[string]string{"foo": "bar"})
 	ti.Output("Compliment", "green", "You smell nice.")
 	ti.Output("System", "default", "Server will be rebooting for maintenance in 45 minutes")
 	ti.Output("System", "yellow", "Server will be rebooting for maintenance in 5 minutes")
